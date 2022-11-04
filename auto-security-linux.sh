@@ -111,9 +111,9 @@ firewall_ufw() {
 
 configure_ssh() {
   echo "* Configuring ssh .."
-  rm -rf /etc/ssh/ssh_config
+  rm -rf /etc/ssh/sshd_config
 
-  cp config/ssh_config /etc/ssh/ssh_config
+  cp config/sshd_config /etc/ssh/sshd_config
   systemctl restart sshd
   fi
 
