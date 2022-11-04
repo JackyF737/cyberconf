@@ -141,7 +141,6 @@ main() {
     # run welcome script again
     print_error "Installation aborted."
     exit 1
-  fi
 }
 
 goodbye() {
