@@ -86,3 +86,36 @@ install_core_software() {
 }
 
 install_optional_software() {
+  [ "$INSTALL_FIREWALL" == "true" ] && apt-get install -y ufw
+  [ "$INSTALL_SSH" == "true" ] && apt-get install -y openssh-server openssh-client
+}
+
+enable_services() {
+  [ "$INSTALL_FIREWALL" == "true" ] && systemctl start ufw && systemctl enable ufw
+  [ "$INSTALL_SSH" == "true" ] && systemctl start sshd && systemctl enable sshd
+}
+
+##### OTHER OS SPECIFIC FUNCTIONS #####
+firewall_ufw() {
+
+  echo -e "\n* Enabling Uncomplicated Firewall (UFW)"
+  echo "* Opening port 22 (SSH)"
+
+  # pointing to /dev/null silences the command output
+  ufw allow ssh >/dev/null
+
+  ufw --force enable
+  ufw --force reload
+  ufw status numbered | sed '/v6/d'
+}
+
+configure_ssh() {
+  echo "* Configuring ssh .."
+  rm -rf /etc/ssh/ssh_config
+
+  cp config/ssh_config /etc/ssh/ssh_config
+  systemctl restart sshd
+  fi
+
+  echo "SSH configured!"
+}
