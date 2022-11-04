@@ -126,15 +126,14 @@ main() {
   # Ask if firewall and ssh is needed
   ask_firewall
   ask_ssh
-  install_core_software
-  install_optional_software
-  enable_services
 
   # confirm installation
   echo -e -n "\n* Initial configuration completed. Continue with installation? (y/N): "
   read -r CONFIRM
   if [[ "$CONFIRM" =~ [Yy] ]]; then
-    perform_install
+    install_core_software
+    install_optional_software
+    enable_services
   else
     # run welcome script again
     print_error "Installation aborted."
