@@ -63,7 +63,6 @@ ask_firewall() {
     CONFIGURE_FIREWALL=true
     INSTALL_FIREWALL=true
     fi
-    ;;
   esac
 }
 ask_ssh() {
@@ -73,7 +72,6 @@ ask_ssh() {
     CONFIGURE_SSH=true
     INSTALL_SSH=true
     fi
-    ;;
   esac
 }
 
