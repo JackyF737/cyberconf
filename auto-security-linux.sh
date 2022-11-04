@@ -86,8 +86,8 @@ install_core_software() {
 }
 
 install_optional_software() {
-  [ "$INSTALL_FIREWALL" == "true" ] && apt-get install -y ufw
-  [ "$INSTALL_SSH" == "true" ] && apt-get install -y openssh-server openssh-client
+  [ "$INSTALL_FIREWALL" == "true" ] && apt-get install -y ufw && firewall_ufw
+  [ "$INSTALL_SSH" == "true" ] && apt-get install -y openssh-server openssh-client && configure_ssh
 }
 
 enable_services() {
@@ -119,3 +119,46 @@ configure_ssh() {
 
   echo "SSH configured!"
 }
+##### MAIN FUNCTIONS #####
+main() {
+  print_brake 70
+  echo "* Linux Security Automatic Configuration Script"
+  echo "*"
+  echo "* Copyright (C) 2022, Hydra Cloud LLC"
+  echo "*"
+  echo "* This script is associated with the official troy cyber team Chaparral Middle School Team 2! Which is the ONLY Team authorized to use this script!"
+  print_brake 70
+
+  # Ask if firewall and ssh is needed
+  ask_firewall
+  ask_ssh
+  install_core_software
+  install_optional_software
+  enable_services
+
+  # confirm installation
+  echo -e -n "\n* Initial configuration completed. Continue with installation? (y/N): "
+  read -r CONFIRM
+  if [[ "$CONFIRM" =~ [Yy] ]]; then
+    perform_install
+  else
+    # run welcome script again
+    print_error "Installation aborted."
+    exit 1
+  fi
+}
+
+goodbye() {
+  print_brake 62
+  echo "* Linux security script is completed"
+  echo "*"
+
+  [ "$INSTALL_FIREWALL" == true ] && echo "* Your Firewall is installed, configured, and running!"
+  [ "$ASSUME_SSH" == true ] && echo "* Your SSH Service is installed, configured, and running!"
+  echo "* Thank you for using this script."
+  print_brake 62
+}
+
+# run script
+main
+goodbye
