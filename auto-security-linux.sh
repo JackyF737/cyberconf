@@ -111,8 +111,6 @@ configure_ssh() {
 
   cp config/sshd_config /etc/ssh/sshd_config
   systemctl restart sshd
-  fi
-
   echo "SSH configured!"
 }
 ##### MAIN FUNCTIONS #####
@@ -141,6 +139,7 @@ main() {
     # run welcome script again
     print_error "Installation aborted."
     exit 1
+  fi
 }
 
 goodbye() {
