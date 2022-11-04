@@ -88,7 +88,7 @@ install_optional_software() {
 
 enable_services() {
   [ "$INSTALL_FIREWALL" == "true" ] && systemctl start ufw && systemctl enable ufw
-  [ "$INSTALL_SSH" == "true" ] && systemctl start sshd && systemctl enable sshd
+  [ "$INSTALL_SSH" == "true" ] && systemctl start ssh && systemctl enable ssh
 }
 
 ##### OTHER OS SPECIFIC FUNCTIONS #####
