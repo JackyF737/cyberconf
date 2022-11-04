@@ -23,6 +23,7 @@ INSTALL_FIREWALL=false
 CONFIGURE_FIREWALL=false
 INSTALL_SSH=false
 CONFIGURE_SSH=false
+UPDATE=false
 
 ####### Visual functions ########
 
@@ -72,6 +73,13 @@ ask_ssh() {
     INSTALL_SSH=true
     fi
 }
+ask_updates() {
+  echo -e -n "* Do you want to automatically update? (y/N): "
+  read -r CONFIRM_UPDATE
+  if [[ "$CONFIRM_UPDATE" =~ [Yy] ]]; then
+    UPDATE=true
+    fi
+}
 
 ##### Main installation functions #####
 install_core_software() {
@@ -84,6 +92,10 @@ install_core_software() {
 install_optional_software() {
   [ "$INSTALL_FIREWALL" == "true" ] && apt-get install -y ufw && firewall_ufw
   [ "$INSTALL_SSH" == "true" ] && apt-get install -y openssh-server openssh-client && configure_ssh
+}
+
+update() {
+  [ "$UPDATE" == "true" ] && update_software
 }
 
 enable_services() {
@@ -113,6 +125,19 @@ configure_ssh() {
   systemctl restart sshd
   echo "SSH configured!"
 }
+
+update_software() {
+  echo "* Updating software.."
+  apt update && sudo apt upgrade
+  apt install - -upgrade bash
+  apt-get dist-upgrade
+  apt autoremove
+  apt autoclean
+  dpkg-reconfigure -plow unattended updates
+  apt update && sudo apt upgrade
+  echo "* software updated!"
+}
+
 ##### MAIN FUNCTIONS #####
 main() {
   print_brake 70
@@ -126,6 +151,7 @@ main() {
   # Ask if firewall and ssh is needed
   ask_firewall
   ask_ssh
+  ask_update
 
   # confirm installation
   echo -e -n "\n* Initial configuration completed. Continue with installation? (y/N): "
@@ -133,6 +159,7 @@ main() {
   if [[ "$CONFIRM" =~ [Yy] ]]; then
     install_core_software
     install_optional_software
+    update
     enable_services
   else
     # run welcome script again
