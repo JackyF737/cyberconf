@@ -24,6 +24,8 @@ CONFIGURE_FIREWALL=false
 INSTALL_SSH=false
 CONFIGURE_SSH=false
 UPDATE=false
+INSTALL_FTP=false
+FTP_TYPE=1
 
 ####### Visual functions ########
 
@@ -73,6 +75,21 @@ ask_ssh() {
     INSTALL_SSH=true
     fi
 }
+ask_ftp() {
+  echo -e -n "* Do you want to automatically install and configure FTP? (y/N): "
+  read -r CONFIRM_FTP
+  if [[ "$CONFIRM_FTP" =~ [Yy] ]]; then
+    INSTALL_FTP=true
+    fi
+}
+ask_ftp_server() {
+  echo -e -n "* What type of FTP Server do you want to use? (1/2/3): "
+  echo -e -n "* Server Types:"
+  echo -e -n "* [1] Pure-FTPD"
+  echo -e -n "* [2] VSFTPD"
+  echo -e -n "* [3] Pro-FTPD"
+  read -r FTP_TYPE
+}
 ask_updates() {
   echo -e -n "* Do you want to automatically update? (y/N): "
   read -r CONFIRM_UPDATE
@@ -112,6 +129,8 @@ firewall_ufw() {
   # pointing to /dev/null silences the command output
   ufw allow ssh >/dev/null
 
+  [ "$INSTALL_FTP" == "true" ] && echo "* Opening port 21 (FTP)" && ufw allow ftp >/dev/null
+
   ufw --force enable
   ufw --force reload
   ufw status numbered | sed '/v6/d'
@@ -124,6 +143,13 @@ configure_ssh() {
   cp config/sshd_config /etc/ssh/sshd_config
   systemctl restart sshd
   echo "SSH configured!"
+}
+
+install_ftp() {
+  echo "* Installing FTP .."
+  [ "$FTP_TYPE" == "1" ] && ftp_install_1
+  [ "$FTP_TYPE" == "2" ] && ftp_install_2
+  [ "$FTP_TYPE" == "3" ] && ftp_install_3
 }
 
 update_software() {
@@ -152,7 +178,8 @@ main() {
   ask_firewall
   ask_ssh
   ask_update
-
+  ask_ftp
+  ask_ftp_type
   # confirm installation
   echo -e -n "\n* Initial configuration completed. Continue with installation? (y/N): "
   read -r CONFIRM
