@@ -112,10 +112,6 @@ install_optional_software() {
   [ "$INSTALL_FTP" == "true" ] && install_ftp
 }
 
-update() {
-  [ "$UPDATE" == "true" ] && update_software
-}
-
 enable_services() {
   [ "$INSTALL_FIREWALL" == "true" ] && systemctl start ufw && systemctl enable ufw
   [ "$INSTALL_SSH" == "true" ] && systemctl start ssh && systemctl enable ssh
@@ -227,7 +223,7 @@ main() {
   if [[ "$CONFIRM" =~ [Yy] ]]; then
     install_core_software
     install_optional_software
-    update
+    [ "$UPDATE" == "true" ] && update_software
     enable_services
     goodbye
   else
