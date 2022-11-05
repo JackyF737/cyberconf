@@ -82,7 +82,7 @@ ask_ftp() {
     INSTALL_FTP=true
     fi
 }
-ask_ftp_server() {
+ask_ftp_type() {
   echo -e -n "* What type of FTP Server do you want to use? (1/2/3): "
   echo -e -n "* Server Types:"
   echo -e -n "* [1] Pure-FTPD"
