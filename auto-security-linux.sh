@@ -229,6 +229,7 @@ main() {
     install_optional_software
     update
     enable_services
+    goodbye
   else
     # run welcome script again
     print_error "Installation aborted."
