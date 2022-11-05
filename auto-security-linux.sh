@@ -26,8 +26,12 @@ CONFIGURE_SSH=false
 UPDATE=false
 INSTALL_FTP=false
 FTP_TYPE=1
+RM=false
+########## Malware Database ############
+for badpkg in netcat socat nc ncat etherwake vtgrab x11vnc acccheck potator polenum cryptocat arp-scan spraywmi trevorc2 pluginhook fuzzbunch spiderfoot poshc2 sniper buttercap phishery powersploit 3proxy tplmap exploit-db findsploit cmospwd braa w3af tftpd rhythmbox vlc snarf fido fimap pykek atftpd nis yp-tools vpnc sock socket tftpd john john-data bind9 hydra nikto pumpa nmap zenmap wireshark dovecot ettercap kismet logkeys telnet iodine vinagre tightvncserver medusa vino rdesktop trojan hack fcrackzip nginx ophcrack logkeys empathy squid gimp imagemagick portmap rpcbind autofs ciphesis freeciv minetest wesnoth talk talkd kdump-tools kexec-tools deluge yersinia linuxdcpp rfdump aircrack-ng weplab routersploit airgeddon wifite dnsrecon dsniff dnstracer pig fern sn1per pop3 sendmail lcrack pdfcrack fcrackzip pyrit sipcrack rarcrack spyrix abyss ethereumjs-tx irpas inetd openbsd-inetd xinetd ftp syslogd ping talk talkd telnet tomcat postgresql dnsmasq vnc nmdb dhclient sqlmap nmap vuze Vuze frostwire kismet minetest medusa hydra truecrack crack cryptcat torrent transmission tixati frostwise irssi snort burp maltego fern niktgo metasploit owasp sparta zarp scapy pret praeda sploit impacket dnstwist rshijack pwnat tgcd iodine buster dirb dnsrecon wifite airgeddon cowpatty boopsuite bully weevely3 vtgrab cyphesis tftpd atftpd tftpd-hpa
 
 ####### Visual functions ########
+
 
 print_error() {
   COLOR_RED='\033[0;31m'
@@ -97,6 +101,13 @@ ask_update() {
     UPDATE=true
     fi
 }
+ask_malware() {
+  echo -e -n "* Do you want to scan and delete malware? WARNING! THIS MAY CAUSE DESTRUCTION TO YOUR SYSTEM (y/N): "
+  read -r CONFIRM_UPDATE
+  if [[ "$CONFIRM_UPDATE" =~ [Yy] ]]; then
+    RM=true
+    fi
+}
 
 ##### Main installation functions #####
 install_core_software() {
@@ -119,6 +130,11 @@ enable_services() {
   [ $INSTALL_SSH == true ] && systemctl start ssh && systemctl enable ssh
 }
 
+remove_malware() {
+  if [ $RM == true ]; then
+    remove_all_malware
+  fi
+}
 ##### OTHER OS SPECIFIC FUNCTIONS #####
 firewall_ufw() {
 
@@ -166,6 +182,14 @@ update_software() {
   apt -y autoclean
   apt -y update && sudo apt -y upgrade
   echo "* software updated!"
+}
+
+remove_all_malware() {
+  echo "* Removing Malware .."
+  apt autoremove --purge "$badpkg"* -y
+  if dpkg -l | grep $badpkg; then
+    echo $badpkg >> badpackages.txt
+  fi
 }
 ##### INSTALLATION FUNCTIONS #####
 ftp_install_1() {
@@ -219,6 +243,7 @@ main() {
   ask_ssh
   ask_update
   ask_ftp
+  ask_malware
   if [ $INSTALL_FTP == true ]; then
     ask_ftp_type
     fi
@@ -229,9 +254,8 @@ main() {
     install_core_software
     install_optional_software
     [ $UPDATE == true ] && update_software
-    echo "90%"
     enable_services
-    echo "95%"
+    remove_malware
   else
     # run welcome script again
     print_error "Installation aborted."
