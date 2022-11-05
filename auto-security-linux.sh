@@ -107,15 +107,15 @@ install_core_software() {
 }
 
 install_optional_software() {
-  [ "$INSTALL_FIREWALL" == "true" ] && apt install -y ufw && firewall_ufw
-  [ "$INSTALL_SSH" == "true" ] && apt install -y openssh-server openssh-client && configure_ssh
-  [ "$INSTALL_FTP" == "true" ] && install_ftp
+  [ $INSTALL_FIREWALL == true ] && apt install -y ufw && firewall_ufw
+  [ $INSTALL_SSH == true ] && apt install -y openssh-server openssh-client && configure_ssh
+  [ $INSTALL_FTP == true ] && install_ftp
 }
 
 enable_services() {
-  [ "$INSTALL_FIREWALL" == "true" ] && systemctl start ufw && systemctl enable ufw
-  [ "$INSTALL_SSH" == "true" ] && systemctl start ssh && systemctl enable ssh
-  if [ "$INSTALL_FTP" == true ]; then
+  [ $INSTALL_FIREWALL == true ] && systemctl start ufw && systemctl enable ufw
+  [ $INSTALL_SSH == true ] && systemctl start ssh && systemctl enable ssh
+  if [ $INSTALL_FTP == true ]; then
       [ "$FTP_TYPE" == "1" ] && systemctl restart pure-ftpd && systemctl enable pure-ftpd
       [ "$FTP_TYPE" == "2" ] && systemctl restart vsftpd && systemctl enable vsftpd
       [ "$FTP_TYPE" == "3" ] && systemctl restart proftpd && systemctl enable proftpd
@@ -131,7 +131,7 @@ firewall_ufw() {
   # pointing to /dev/null silences the command output
   ufw allow ssh >/dev/null
 
-  [ "$INSTALL_FTP" == "true" ] && echo "* Opening port 21 (FTP)" && ufw allow ftp >/dev/null
+  [ $INSTALL_FTP == true ] && echo "* Opening port 21 (FTP)" && ufw allow ftp >/dev/null
 
   ufw --force enable
   ufw --force reload
@@ -214,7 +214,7 @@ main() {
   ask_ssh
   ask_update
   ask_ftp
-  if [ "$INSTALL_FTP" == true ]; then
+  if [ $INSTALL_FTP == true ]; then
     ask_ftp_type
     fi
   # confirm installation
@@ -223,7 +223,7 @@ main() {
   if [[ "$CONFIRM" =~ [Yy] ]]; then
     install_core_software
     install_optional_software
-    [ "$UPDATE" == "true" ] && update_software
+    [ $UPDATE == true ] && update_software
     echo "90%"
     enable_services
     echo "95%"
