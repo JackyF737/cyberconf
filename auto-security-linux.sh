@@ -90,7 +90,7 @@ ask_ftp_server() {
   echo -e -n "* [3] Pro-FTPD"
   read -r FTP_TYPE
 }
-ask_updates() {
+ask_update() {
   echo -e -n "* Do you want to automatically update? (y/N): "
   read -r CONFIRM_UPDATE
   if [[ "$CONFIRM_UPDATE" =~ [Yy] ]]; then
