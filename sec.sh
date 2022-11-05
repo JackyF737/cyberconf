@@ -30,14 +30,6 @@ while getopts 'del' flag; do
        exit 1 ;;
   esac
 
-if [ "$DELETE_FLAG" == true ]; then
-  delete
-  fi
-
-if [ "$UPDATE_FLAG" == true ]; then
-  update
-  fi
-
 update() {
   echo "* Updating software.."
   apt -y update && apt -y upgrade
@@ -58,3 +50,24 @@ delete() {
   apt -y autoclean
   apt -y update && sudo apt -y upgrade
 }
+
+goodbye() {
+  print_brake 62
+  echo "* Thank you for using this script."
+  print_brake 62
+}
+main() {
+  echo "Executing Functions..."
+  if [ "$DELETE_FLAG" == true ]; then
+    delete
+    fi
+
+  if [ "$UPDATE_FLAG" == true ]; then
+    update
+    fi
+  echo "Done!"
+}
+
+# run script
+main
+goodbye
