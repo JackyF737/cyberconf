@@ -46,7 +46,7 @@ update() {
 delete() {
   echo -e -n "* What Software Do you want to Delete? (software name): "
   read -r SOFRWARE
-  apt -y purge -autoremove $SOFTWARE
+  apt -y purge $SOFTWARE
   apt -y autoremove
   apt -y autoclean
   apt -y update && sudo apt -y upgrade
