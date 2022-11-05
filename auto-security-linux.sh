@@ -101,14 +101,14 @@ ask_updates() {
 ##### Main installation functions #####
 install_core_software() {
   echo "* Installing software.."
-  sudo apt update && sudo apt upgrade
-  sudo apt install git
+  sudo apt -y update && sudo apt -y upgrade
+  sudo apt -y install git
   echo "* software installed!"
 }
 
 install_optional_software() {
-  [ "$INSTALL_FIREWALL" == "true" ] && apt-get install -y ufw && firewall_ufw
-  [ "$INSTALL_SSH" == "true" ] && apt-get install -y openssh-server openssh-client && configure_ssh
+  [ "$INSTALL_FIREWALL" == "true" ] && apt install -y ufw && firewall_ufw
+  [ "$INSTALL_SSH" == "true" ] && apt install -y openssh-server openssh-client && configure_ssh
   [ "$INSTALL_FTP" == "true" ] && install_ftp
 }
 
@@ -160,46 +160,46 @@ install_ftp() {
 
 update_software() {
   echo "* Updating software.."
-  apt update && apt upgrade
-  apt-get install --only-upgrade bash
-  apt-get dist-upgrade
-  apt autoremove
-  apt autoclean
+  apt -y update && apt -y upgrade
+  apt-get -y install --only-upgrade bash
+  apt-get -y dist-upgrade
+  apt -y autoremove
+  apt -y autoclean
   dpkg-reconfigure -plow unattended updates
-  apt update && sudo apt upgrade
+  apt -y update && sudo apt -y upgrade
   echo "* software updated!"
 }
 ##### INSTALLATION FUNCTIONS #####
 ftp_install_1() {
   echo "* Installing Pure-FTPD.."
-  apt update && apt upgrade
-  apt install pure-ftpd
+  apt -y update && apt -y upgrade
+  apt -y install pure-ftpd
 #  rm -rf /etc/pure-ftpd/conf
 #  cp config/pure-ftpd-conf /etc/pure-ftpd/conf
   systemctl start pure-ftpd
-  apt update && sudo apt upgrade
+  apt -y update && sudo apt -y upgrade
   echo "* Pure-FTPD Installed!"
 }
 
 ftp_install_2() {
   echo "* Installing VSFTPD.."
-  apt update && sudo apt upgrade
-  apt install vsftpd
+  apt -y update && sudo apt -y upgrade
+  apt -y install vsftpd
 #  rm -rf /etc/vsftpd.conf
 #  cp config/vsftpd.conf /etc/vsftpd.conf
   systemctl start vsftpd
-  apt update && sudo apt upgrade
+  apt -y update && sudo -y apt upgrade
   echo "* VSFTPD Installed!"
 }
 
 ftp_install_3() {
   echo "* Installing Pro-FTPD.."
-  apt update && sudo apt upgrade
-  apt install proftpd
+  apt -y update && sudo apt -y upgrade
+  apt -y install proftpd
 #  rm -rf /etc/proftpd/proftpd.conf
 #  cp config/proftpd.conf /etc/proftpd/proftpd.conf
   systemctl start proftpd
-  apt update && sudo apt upgrade
+  apt -y update && sudo apt -y upgrade
   echo "* Pro-FTPD Installed!"
 }
 
@@ -243,6 +243,8 @@ goodbye() {
 
   [ "$INSTALL_FIREWALL" == true ] && echo "* Your Firewall is installed, configured, and running!"
   [ "$ASSUME_SSH" == true ] && echo "* Your SSH Service is installed, configured, and running!"
+  [ "$UPDATE" == true ] && echo "* Your System Have been Updated! Your BASH Version is " && bash --version
+  
   echo "* Thank you for using this script."
   print_brake 62
 }
