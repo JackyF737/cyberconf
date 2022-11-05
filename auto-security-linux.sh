@@ -109,7 +109,9 @@ install_core_software() {
 install_optional_software() {
   [ $INSTALL_FIREWALL == true ] && apt install -y ufw && firewall_ufw
   [ $INSTALL_SSH == true ] && apt install -y openssh-server openssh-client && configure_ssh
-  [ $INSTALL_FTP == true ] && install_ftp
+  if [ $INSTALL_FTP == true ]; then
+    install_ftp
+  fi
 }
 
 enable_services() {
