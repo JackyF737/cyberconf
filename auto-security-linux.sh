@@ -118,10 +118,10 @@ enable_services() {
   [ $INSTALL_FIREWALL == true ] && systemctl start ufw && systemctl enable ufw
   [ $INSTALL_SSH == true ] && systemctl start ssh && systemctl enable ssh
   if [ $INSTALL_FTP == true ]; then
-      [ "$FTP_TYPE" == "1" ] && systemctl restart pure-ftpd && systemctl enable pure-ftpd
-      [ "$FTP_TYPE" == "2" ] && systemctl restart vsftpd && systemctl enable vsftpd
-      [ "$FTP_TYPE" == "3" ] && systemctl restart proftpd && systemctl enable proftpd
-      fi
+    [ "$FTP_TYPE" == "1" ] && systemctl restart pure-ftpd && systemctl enable pure-ftpd
+    [ "$FTP_TYPE" == "2" ] && systemctl restart vsftpd && systemctl enable vsftpd
+    [ "$FTP_TYPE" == "3" ] && systemctl restart proftpd && systemctl enable proftpd
+  fi
 }
 
 ##### OTHER OS SPECIFIC FUNCTIONS #####
