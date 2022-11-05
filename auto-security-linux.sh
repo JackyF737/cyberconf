@@ -224,8 +224,9 @@ main() {
     install_core_software
     install_optional_software
     [ "$UPDATE" == "true" ] && update_software
+    echo "90%"
     enable_services
-    goodbye
+    echo "95%"
   else
     # run welcome script again
     print_error "Installation aborted."
