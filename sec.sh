@@ -29,6 +29,7 @@ while getopts 'del' flag; do
     update) UPDATE_FLAG=true
        exit 1 ;;
   esac
+done
 
 update() {
   echo "* Updating software.."
