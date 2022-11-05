@@ -151,9 +151,15 @@ configure_ssh() {
 
 install_ftp() {
   echo "* Installing FTP .."
-  [ "$FTP_TYPE" == "1" ] && ftp_install_1
-  [ "$FTP_TYPE" == "2" ] && ftp_install_2
-  [ "$FTP_TYPE" == "3" ] && ftp_install_3
+  if [ "$FTP_TYPE" == "1" ]; then
+    ftp_install_1
+    fi
+  if [ "$FTP_TYPE" == "2" ]; then
+    ftp_install_2
+    fi
+  if [ "$FTP_TYPE" == "3" ]; then
+    ftp_install_3
+    fi
 }
 
 update_software() {
