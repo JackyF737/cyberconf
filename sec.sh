@@ -23,10 +23,10 @@ print_usage() {
   printf "Usage: ..."
 }
 
-while getopts 'del' flag; do
+while getopts 'du' flag; do
   case "${flag}" in
-    del) DELETE_FLAG=true ;;
-    update) UPDATE_FLAG=true
+    d) DELETE_FLAG=true ;;
+    u) UPDATE_FLAG=true
        exit 1 ;;
   esac
 done
@@ -53,9 +53,7 @@ delete() {
 }
 
 goodbye() {
-  print_brake 62
   echo "* Thank you for using this script."
-  print_brake 62
 }
 main() {
   echo "Executing Functions..."
