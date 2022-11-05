@@ -188,7 +188,7 @@ ftp_install_2() {
 #  rm -rf /etc/vsftpd.conf
 #  cp config/vsftpd.conf /etc/vsftpd.conf
   systemctl start vsftpd
-  apt -y update && sudo -y apt upgrade
+  apt -y update && sudo apt -y upgrade
   echo "* VSFTPD Installed!"
 }
 
