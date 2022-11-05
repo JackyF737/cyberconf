@@ -23,7 +23,7 @@ print_usage() {
   printf "Usage: ..."
 }
 
-while getopts 'du' flag; do
+while getopts 'du:' flag; do
   case "${flag}" in
     d) DELETE_FLAG=true ;;
     u) UPDATE_FLAG=true
