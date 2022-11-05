@@ -163,7 +163,36 @@ update_software() {
   apt update && sudo apt upgrade
   echo "* software updated!"
 }
+##### INSTALLATION FUNCTIONS #####
+ftp_install_1() {
+  echo "* Installing Pure-FTPD.."
+  apt update && sudo apt upgrade
+  apt install pure-ftpd
+  rm -rf /etc/pure-ftpd/conf
+  cp config/pure-ftpd-conf /etc/pure-ftpd/conf
+  apt update && sudo apt upgrade
+  echo "* Pure-FTPD Installed!"
+}
 
+ftp_install_2() {
+  echo "* Installing VSFTPD.."
+  apt update && sudo apt upgrade
+  apt install vsftpd
+  rm -rf /etc/vsftpd.conf
+  cp config/vsftpd.conf /etc/vsftpd.conf
+  apt update && sudo apt upgrade
+  echo "* VSFTPD Installed!"
+}
+
+ftp_install_3() {
+  echo "* Installing Pro-FTPD.."
+  apt update && sudo apt upgrade
+  apt install proftpd
+  rm -rf /etc/proftpd/proftpd.conf
+  cp config/proftpd.conf /etc/proftpd/proftpd.conf
+  apt update && sudo apt upgrade
+  echo "* Pro-FTPD Installed!"
+}
 ##### MAIN FUNCTIONS #####
 main() {
   print_brake 70
