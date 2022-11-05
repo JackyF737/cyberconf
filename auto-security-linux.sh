@@ -117,11 +117,6 @@ install_optional_software() {
 enable_services() {
   [ $INSTALL_FIREWALL == true ] && systemctl start ufw && systemctl enable ufw
   [ $INSTALL_SSH == true ] && systemctl start ssh && systemctl enable ssh
-  if [ $INSTALL_FTP == true ]; then
-    [ "$FTP_TYPE" == "1" ] && systemctl restart pure-ftpd && systemctl enable pure-ftpd
-    [ "$FTP_TYPE" == "2" ] && systemctl restart vsftpd && systemctl enable vsftpd
-    [ "$FTP_TYPE" == "3" ] && systemctl restart proftpd && systemctl enable proftpd
-  fi
 }
 
 ##### OTHER OS SPECIFIC FUNCTIONS #####
@@ -181,6 +176,7 @@ ftp_install_1() {
 #  cp config/pure-ftpd-conf /etc/pure-ftpd/conf
   systemctl start pure-ftpd
   apt -y update && sudo apt -y upgrade
+  systemctl restart pure-ftpd && systemctl enable pure-ftpd
   echo "* Pure-FTPD Installed!"
 }
 
@@ -192,6 +188,7 @@ ftp_install_2() {
 #  cp config/vsftpd.conf /etc/vsftpd.conf
   systemctl start vsftpd
   apt -y update && sudo apt -y upgrade
+  systemctl restart vsftpd && systemctl enable vsftpd
   echo "* VSFTPD Installed!"
 }
 
@@ -203,6 +200,7 @@ ftp_install_3() {
 #  cp config/proftpd.conf /etc/proftpd/proftpd.conf
   systemctl start proftpd
   apt -y update && sudo apt -y upgrade
+  systemctl restart proftpd && systemctl enable proftpd
   echo "* Pro-FTPD Installed!"
 }
 
