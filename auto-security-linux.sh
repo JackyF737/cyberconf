@@ -169,7 +169,6 @@ update_software() {
   apt-get -y dist-upgrade
   apt -y autoremove
   apt -y autoclean
-  dpkg-reconfigure -plow unattended updates
   apt -y update && sudo apt -y upgrade
   echo "* software updated!"
 }
